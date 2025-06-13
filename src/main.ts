@@ -9,6 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TranslocoRootModule } from '../src/app/transloco-root.module';
 import 'zone.js';
 
 bootstrapApplication(AppComponent, {
@@ -22,7 +23,8 @@ bootstrapApplication(AppComponent, {
       MatDialogModule,
       MatAutocompleteModule,
       MatFormFieldModule,
-      MatInputModule
+      MatInputModule,
+       TranslocoRootModule
     )
   ]
 }).catch(err => console.error(err));

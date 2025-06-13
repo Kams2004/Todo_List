@@ -30,24 +30,28 @@
             <label for="assignee" class="block text-sm font-medium text-gray-700 mb-1">
               Assignee
             </label>
-            <input
-              type="text"
-              id="assignee"
-              formControlName="person"
-              [matAutocomplete]="auto"
-              placeholder="Search for a person"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              [class.border-red-500]="form.get('person')?.invalid && form.get('person')?.touched"
-            >
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayPerson">
-              <mat-option *ngFor="let person of filteredPeople | async" [value]="person">
-                <img [src]="person.avatar" [alt]="person.name" class="h-8 w-8 rounded-full mr-3">
-                <div>
-                  <div class="text-sm font-medium text-gray-900">{{ person.name }}</div>
-                  <div class="text-sm text-gray-500">{{ person.email }}</div>
-                </div>
-              </mat-option>
-            </mat-autocomplete>
+            <mat-form-field appearance="outline" class="w-full">
+              <input
+                type="text"
+                matInput
+                id="assignee"
+                formControlName="person"
+                [matAutocomplete]="auto"
+                placeholder="Search for a person"
+                class="w-full"
+              >
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayPerson">
+                <mat-option *ngFor="let person of filteredPeople | async" [value]="person">
+                  <div class="flex items-center">
+                    <img [src]="person.avatar" [alt]="person.name" class="h-8 w-8 rounded-full mr-3">
+                    <div>
+                      <div class="text-sm font-medium text-gray-900">{{ person.name }}</div>
+                      <div class="text-sm text-gray-500">{{ person.email }}</div>
+                    </div>
+                  </div>
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
             <p *ngIf="form.get('person')?.invalid && form.get('person')?.touched" class="mt-1 text-sm text-red-600">
               {{ errors['person'] || 'Assignee is required.' }}
             </p>
@@ -93,17 +97,31 @@
             </select>
           </div>
 
-          <!-- Due Date -->
-          <div>
-            <label for="dueDate" class="block text-sm font-medium text-gray-700 mb-1">
-              Due Date
-            </label>
-            <input
-              type="date"
-              id="dueDate"
-              formControlName="startDate"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
+          <!-- Dates -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="startDate" class="block text-sm font-medium text-gray-700 mb-1">
+                Start Date
+              </label>
+              <input
+                type="date"
+                id="startDate"
+                formControlName="startDate"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+            </div>
+            <div>
+              <label for="endDate" class="block text-sm font-medium text-gray-700 mb-1">
+                End Date
+              </label>
+              <input
+                type="date"
+                id="endDate"
+                formControlName="endDate"
+                [disabled]="form.get('completed')?.value"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:bg-gray-100"
+              >
+            </div>
           </div>
 
           <!-- Completed -->

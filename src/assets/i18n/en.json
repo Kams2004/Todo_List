@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "Task Manager",
+    "addTask": "Add New Task",
+    "search": "Search here",
+    "filters": {
+      "all": "All",
+      "priority": "Priority",
+      "today": "Today",
+      "completed": "Completed"
+    },
+    "labels": {
+      "html": "HTML",
+      "css": "CSS",
+      "nodejs": "Node.js",
+      "jquery": "jQuery"
+    },
+    "task": {
+      "task": "Task",
+      "labels": "Labels",
+      "priority": "Priority",
+      "dueDate": "Due Date",
+      "actions": "Actions",
+      "status": "Status",
+      "completed": "Completed",
+      "pending": "Pending"
+    }
+  }
+}

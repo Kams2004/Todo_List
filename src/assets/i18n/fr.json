@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "Gestionnaire de Tâches",
+    "addTask": "Ajouter une Nouvelle Tâche",
+    "search": "Rechercher ici",
+    "filters": {
+      "all": "Tous",
+      "priority": "Priorité",
+      "today": "Aujourd'hui",
+      "completed": "Terminé"
+    },
+    "labels": {
+      "html": "HTML",
+      "css": "CSS",
+      "nodejs": "Node.js",
+      "jquery": "jQuery"
+    },
+    "task": {
+      "task": "Tâche",
+      "labels": "Étiquettes",
+      "priority": "Priorité",
+      "dueDate": "Date d'échéance",
+      "actions": "Actions",
+      "status": "Statut",
+      "completed": "Terminé",
+      "pending": "En attente"
+    }
+  }
+}

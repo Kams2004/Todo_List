@@ -48,23 +48,9 @@ export class TodoModalComponent implements OnInit {
   ngOnInit(): void {
     this.filteredPeople = this.form.get('person')!.valueChanges.pipe(
       startWith(''),
-      map(value => (typeof value === 'string' ? value : value?.name)),
-      map(name => (name ? this._filterPeople(name) : this.people.slice()))
+      map(value => typeof value === 'string' ? value : value?.name),
+      map(name => name ? this._filterPeople(name) : this.people.slice())
     );
-  }
-
-  private initializeForm(): void {
-    this.form = this.fb.group({
-      id: [this.data.todo?.id || null],
-      title: [this.data.todo?.title || '', [Validators.required, Validators.minLength(3)]],
-      person: [this.data.todo?.person || null, [Validators.required, this.validatePerson.bind(this)]],
-      startDate: [this.data.todo?.startDate || new Date(), Validators.required],
-      endDate: [{ value: this.data.todo?.endDate || null, disabled: this.data.todo?.completed }],
-      priority: [this.data.todo?.priority || Priority.Medium, Validators.required],
-      labels: [this.data.todo?.labels || []],
-      description: [this.data.todo?.description || ''],
-      completed: [this.data.todo?.completed || false]
-    });
 
     this.form.get('completed')!.valueChanges.subscribe(completed => {
       const endDateControl = this.form.get('endDate');
@@ -77,6 +63,43 @@ export class TodoModalComponent implements OnInit {
     });
   }
 
+private initializeForm(): void {
+  // Format dates for the input fields (YYYY-MM-DD)
+  const startDate = this.data.todo?.startDate ? this.formatDateForInput(this.data.todo.startDate) : this.formatDateForInput(new Date());
+  const endDate = this.data.todo?.endDate ? this.formatDateForInput(this.data.todo.endDate) : null;
+
+  this.form = this.fb.group({
+    id: [this.data.todo?.id || null],
+    title: [this.data.todo?.title || '', [Validators.required, Validators.minLength(3)]],
+    person: [this.data.todo?.person || null, [Validators.required, this.validatePerson.bind(this)]],
+    startDate: [startDate, Validators.required],
+    endDate: [{
+      value: endDate,
+      disabled: this.data.todo?.completed || false
+    }],
+    priority: [this.data.todo?.priority || Priority.Medium, Validators.required],
+    labels: [this.data.todo?.labels || []],
+    description: [this.data.todo?.description || ''],
+    completed: [this.data.todo?.completed || false]
+  });
+
+  if (this.data.todo?.completed) {
+    this.form.get('endDate')?.disable();
+  }
+}
+
+//helper method to format dates for input fields
+private formatDateForInput(date: Date): string {
+  const d = new Date(date);
+  let month = '' + (d.getMonth() + 1);
+  let day = '' + d.getDate();
+  const year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+}
   private _filterPeople(name: string): Person[] {
     const filterValue = name.toLowerCase();
     return this.people.filter(person =>
@@ -134,23 +157,23 @@ export class TodoModalComponent implements OnInit {
     return Object.keys(this.errors).length === 0;
   }
 
-  onSubmit(): void {
-    if (this.validateForm()) {
-      const formValue = this.form.getRawValue();
-      const todo: Todo = {
-        id: formValue.id,
-        title: formValue.title,
-        person: formValue.person,
-        startDate: new Date(formValue.startDate),
-        endDate: formValue.endDate ? new Date(formValue.endDate) : null,
-        priority: formValue.priority,
-        labels: formValue.labels,
-        description: formValue.description,
-        completed: formValue.completed
-      };
-      this.dialogRef.close(todo);
-    } else {
-      this.form.markAllAsTouched();
-    }
+onSubmit(): void {
+  if (this.validateForm()) {
+    const formValue = this.form.getRawValue();
+    const todo: Todo = {
+      id: formValue.id,
+      title: formValue.title,
+      person: formValue.person,
+      startDate: new Date(formValue.startDate),
+      endDate: formValue.endDate ? new Date(formValue.endDate) : null,
+      priority: formValue.priority,
+      labels: formValue.labels,
+      description: formValue.description,
+      completed: formValue.completed
+    };
+    this.dialogRef.close(todo);
+  } else {
+    this.form.markAllAsTouched();
   }
+}
 }
